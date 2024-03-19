@@ -71,7 +71,8 @@ Asegúrate de tener instalado lo siguiente en tu máquina:
     - DB_NAME: Nombre de la base de datos
     - DB_USERNAME: Usuario de la base de datos
     - DB_PASSWORD: Password de la cuenta
-
+ 
+- Como recomendacion debes crear los roles en users_roles: ROLE_ADMIN, ROLE_USER. Ademas crear el usuario admin en la base de datos para mayor seguridad.
 ####
 
 - Opciones de configuración adicionales se pueden encontrar en la documentación de Spring
