@@ -56,6 +56,7 @@ public class SecurityConfig {
                         authRequest
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll() // Permitir acceso público a las rutas API GET
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Permitir acceso público a las rutas de Swagger
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

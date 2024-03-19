@@ -18,9 +18,6 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
@@ -41,26 +38,12 @@ public class JwtTokenProvider {
         Date expirationDate = new Date(currentDate.getTime() + jwtExpirationMs);
 
         String token = Jwts.builder().setSubject(username).setIssuedAt(currentDate).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secretKey).compact();
-       /*
-       Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(currentDate)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                .compact();
-       */
 
         return token;
     }
 
     public String getUsernameByJwt(String token) {
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        /* Jwts.parserBuilder()
-                .setSigningKey(jwtSecret)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-         */
         return claims.getSubject();
     }
 
@@ -82,34 +65,4 @@ public class JwtTokenProvider {
             throw new BlogAppException(HttpStatus.BAD_REQUEST, "The string claims is empty");
         }
     }
-/*
-    private Key getSignKey() {
-        // Generar una clave segura para el algoritmo HS512
-        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-        // Obtener la representación en bytes de la clave
-        byte[] keyBytes = key.getEncoded();
-
-        // Imprimir la longitud de la clave en bits
-        int keySizeBits = keyBytes.length * 8;
-        System.out.println("Longitud de la clave: " + keySizeBits + " bits");
-
-        // Convertir los bytes a una cadena Base64 para impresión
-        String base64Key = Base64.getEncoder().encodeToString(keyBytes);
-
-        // Imprimir la clave en texto plano
-        System.out.println("Clave generada: " + base64Key);
-
-         */
-       /* // Definir tu clave secreta como una cadena (en este caso, la clave es "mi_clave_secreta")
-        String secretKeyString = jwtSecret;
-
-        // Convertir la cadena de la clave secreta a un arreglo de bytes
-        byte[] secretKeyBytes = secretKeyString.getBytes(StandardCharsets.UTF_8);
-
-        // Utilizar la clave secreta definida para el algoritmo HS512 y retornarla
-        return Keys.hmacShaKeyFor(secretKeyBytes);
-
-    }
-     */
 }
